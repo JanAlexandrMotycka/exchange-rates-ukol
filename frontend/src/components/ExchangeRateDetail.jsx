@@ -5,8 +5,8 @@ function ExchangeRateDetail({ rate, onBack }) {
         ← Back
       </button>
 
-      <h1>{rate.currency}</h1>
-      <p>{rate.country}</p>
+      <h1>{rate.shortName}</h1>
+      <p>{rate.name} - {rate.country}</p>
 
       <div className="detail-grid">
         <div>
@@ -16,12 +16,27 @@ function ExchangeRateDetail({ rate, onBack }) {
 
         <div>
           <span>Buy</span>
-          <strong>{rate.buy}</strong>
+          <strong>{rate.valBuy}</strong>
         </div>
 
         <div>
           <span>Sell</span>
-          <strong>{rate.sell}</strong>
+          <strong>{rate.valSell}</strong>
+        </div>
+
+        <div>
+          <span>Middle</span>
+          <strong>{rate.valMid}</strong>
+        </div>
+
+        <div>
+          <span>CNB Middle</span>
+          <strong>{rate.cnbMid}</strong>
+        </div>
+
+        <div>
+          <span>Valid From</span>
+          <strong>{rate.validFrom}</strong>
         </div>
       </div>
     </section>

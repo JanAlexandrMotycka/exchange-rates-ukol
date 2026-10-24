@@ -1,36 +1,54 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ExchangeRateList from "../components/ExchangeRateList";
 import ExchangeRateDetail from "../components/ExchangeRateDetail";
 
-const testRates = [
-  {
-    id: 1,
-    currency: "EUR",
-    country: "European Union",
-    amount: 1,
-    buy: 24.5,
-    sell: 25.1,
-  },
-  {
-    id: 2,
-    currency: "USD",
-    country: "United States",
-    amount: 1,
-    buy: 21.2,
-    sell: 22.0,
-  },
-  {
-    id: 3,
-    currency: "GBP",
-    country: "United Kingdom",
-    amount: 1,
-    buy: 28.5,
-    sell: 29.4,
-  },
-];
+const API_URL =
+  "https://webapi.developers.erstegroup.com/api/csas/public/sandbox/v2/rates/exchangerates?web-api-key=c52a0682-4806-4903-828f-6cc66508329e";
 
 function ExchangeRatesPage() {
+  const [rates, setRates] = useState([]);
   const [selectedRate, setSelectedRate] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function loadRates() {
+      try {
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+          throw new Error("Failed to load exchange rates.");
+        }
+
+        const data = await response.json();
+
+        setRates(data);
+      } catch (error) {
+        console.error(error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadRates();
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="page">
+        <p>Loading exchange rates...</p>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="page">
+        <p>{error}</p>
+      </main>
+    );
+  }
 
   if (selectedRate) {
     return (
@@ -48,7 +66,7 @@ function ExchangeRatesPage() {
       <h1>Exchange Rates</h1>
 
       <ExchangeRateList
-        rates={testRates}
+        rates={rates}
         onSelect={setSelectedRate}
       />
     </main>
