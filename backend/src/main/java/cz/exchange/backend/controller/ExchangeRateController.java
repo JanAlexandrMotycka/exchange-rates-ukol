@@ -22,6 +22,6 @@ public class ExchangeRateController {
     @GetMapping
     public List<ExchangeRateDto> getRates(@RequestParam(name = "usedb") boolean useDb) {
 
-        return service.getRates();
+        return service.getRates(useDb);
     }
 }
